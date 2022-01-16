@@ -1,241 +1,226 @@
-import React, { useCallback, useEffect, useState } from "react";
-// import "./App.css";
-import "@shopify/polaris/build/esm/styles.css";
-import enTranslations from "@shopify/polaris/locales/en.json";
+import React, { useCallback, useRef, useState } from "react";
 import {
   AppProvider,
-  Page,
-  Button,
-  Icon,
+  ActionList,
+  Avatar,
+  Card,
+  ContextualSaveBar,
+  FormLayout,
+  Frame,
   Layout,
-  MediaCard,
-  DatePicker,
-  Popover,
-  VideoThumbnail,
-  DisplayText,
-  Subheading,
-  TextContainer,
-  Heading,
+  Loading,
   Navigation,
+  Page,
+  SkeletonBodyText,
+  SkeletonDisplayText,
+  SkeletonPage,
+  TextContainer,
+  Toast,
+  TopBar,
 } from "@shopify/polaris";
-import { HomeMajor, CirclePlusMinor, HeartMajor } from "@shopify/polaris-icons";
-import styled from "styled-components";
+import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
 
-import moment from "moment";
+import Feed from "./Feed";
 
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
-`;
-const ContentContainer = styled.div`
-  position: relative;
-  display: flex;
-  padding: 2rem 1rem;
-  flex-direction: column;
-  max-width: 1080px;
-  @media (min-width: 769px) {
-    width: 70%;
-    margin: auto;
-  }
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
+export default function FrameExample() {
+  const defaultState = useRef({
+    emailFieldValue: "dharma@jadedpixel.com",
+    nameFieldValue: "Jaded Pixel",
+  });
+  const skipToContentRef = useRef(null);
 
-function App() {
-  const todayDate = new Date();
-  const days = 86400000;
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+  const [toastActive, setToastActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const [userMenuActive, setUserMenuActive] = useState(false);
+  const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
+  const [nameFieldValue, setNameFieldValue] = useState(
+    defaultState.current.nameFieldValue
+  );
+  const [emailFieldValue, setEmailFieldValue] = useState(
+    defaultState.current.emailFieldValue
+  );
+  const [storeName, setStoreName] = useState(
+    defaultState.current.nameFieldValue
+  );
+  const handleDiscard = useCallback(() => {
+    setEmailFieldValue(defaultState.current.emailFieldValue);
+    setNameFieldValue(defaultState.current.nameFieldValue);
+    setIsDirty(false);
+  }, []);
+  const handleSave = useCallback(() => {
+    defaultState.current.nameFieldValue = nameFieldValue;
+    defaultState.current.emailFieldValue = emailFieldValue;
 
-  const [popoverActive, setPopoverActive] = useState(false);
-  const [tagValue, setTagValue] = useState("");
-
-  const togglePopoverActive = useCallback(
-    () => setPopoverActive((popoverActive) => !popoverActive),
+    setIsDirty(false);
+    setToastActive(true);
+    setStoreName(defaultState.current.nameFieldValue);
+  }, [emailFieldValue, nameFieldValue]);
+  const toggleToastActive = useCallback(
+    () => setToastActive((toastActive) => !toastActive),
+    []
+  );
+  const toggleUserMenuActive = useCallback(
+    () => setUserMenuActive((userMenuActive) => !userMenuActive),
+    []
+  );
+  const toggleMobileNavigationActive = useCallback(
+    () =>
+      setMobileNavigationActive(
+        (mobileNavigationActive) => !mobileNavigationActive
+      ),
+    []
+  );
+  const toggleIsLoading = useCallback(
+    () => setIsLoading((isLoading) => !isLoading),
     []
   );
 
-  const handleTagValueChange = useCallback((value) => setTagValue(value), []);
-  const activator = (
-    <Button onClick={togglePopoverActive} disclosure>
-      Filter
-    </Button>
+  const toastMarkup = toastActive ? (
+    <Toast onDismiss={toggleToastActive} content="Changes saved" />
+  ) : null;
+
+  const userMenuActions = [
+    {
+      items: [{ content: "Community forums" }],
+    },
+  ];
+
+  const contextualSaveBarMarkup = isDirty ? (
+    <ContextualSaveBar
+      message="Unsaved changes"
+      saveAction={{
+        onAction: handleSave,
+      }}
+      discardAction={{
+        onAction: handleDiscard,
+      }}
+    />
+  ) : null;
+
+  const userMenuMarkup = (
+    <TopBar.UserMenu
+      actions={userMenuActions}
+      name="Dharma"
+      detail={storeName}
+      initials="D"
+      open={userMenuActive}
+      onToggle={toggleUserMenuActive}
+    />
   );
-  console.log(todayDate.getMonth() + 1);
-  const [{ month, year }, setDate] = useState({
-    month: { ...todayDate.getMonth() },
-    year: todayDate.getFullYear(),
-  });
-  const [selectedDates, setSelectedDates] = useState({
-    start: new Date(todayDate - 5 * days),
-    end: todayDate,
-  });
 
-  const handleMonthChange = useCallback(
-    (month, year) => setDate({ month, year }),
-    []
+  const topBarMarkup = (
+    <TopBar
+      showNavigationToggle
+      //   userMenu={userMenuMarkup}
+      onNavigationToggle={toggleMobileNavigationActive}
+    />
   );
 
-  const [play, setPlay] = React.useState(false);
-  const url = play
-    ? `https://www.youtube.com/embed/tu-bgIg-Luo?autoplay=1`
-    : `https://www.youtube.com/embed/tu-bgIg-Luo`;
+  const navigationMarkup = (
+    <Navigation location="/">
+      <Navigation.Section
+        title="Navigation"
+        items={[
+          {
+            label: "Home",
+            icon: HomeMajor,
+            onClick: toggleIsLoading,
+          },
+          {
+            label: "Liked",
+            icon: HeartMajor,
+            onClick: toggleIsLoading,
+          },
+        ]}
+      />
+    </Navigation>
+  );
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
-  useEffect(() => {
-    const start = moment(todayDate).subtract(7, "days").format("YYYY-MM-DD");
-    const end = moment(todayDate).format("YYYY-MM-DD");
-    fetch(
-      `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API}&start_date=${start}&end_date=${end}&thumbs=true`
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result, selectedDates);
+  const loadingMarkup = isLoading ? <Loading /> : null;
 
-          setIsLoaded(true);
-          setItems(result.reverse());
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          console.log("ERROR");
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, [selectedDates]);
+  const actualPageMarkup = (
+    <Page title="Your Feed">
+      <Feed />
+    </Page>
+  );
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <div className="App">
-        <AppProvider i18n={enTranslations}>
-          <Page title="Example app">
-            <HeaderContainer>
-              <ContentContainer>
-                <TextContainer>
-                  <DisplayText size="extraLarge">Spacestagram</DisplayText>
-                  <Heading>
-                    Brought to you by NASA's Astronomy Photo of the Day (APOP)
-                    API
-                  </Heading>
-                </TextContainer>
-              </ContentContainer>
-            </HeaderContainer>
-            <Navigation location="/">
-              <Navigation.Section
-                items={[
-                  {
-                    url: "/path/to/place",
-                    label: "Home",
-                    icon: HomeMajor,
-                  },
-                  {
-                    url: "/path/to/place",
-                    label: "Orders",
-                    // icon: OrdersMajor,
-                    badge: "15",
-                  },
-                  {
-                    url: "/path/to/place",
-                    label: "Products",
-                    // icon: ProductsMajor,
-                  },
-                ]}
-              />
-              <Popover
-                active={popoverActive}
-                activator={activator}
-                onClose={togglePopoverActive}
-                ariaHaspopup={false}
-                sectioned
-              >
-                <DatePicker
-                  month={month}
-                  year={year}
-                  onChange={setSelectedDates}
-                  onMonthChange={handleMonthChange}
-                  selected={selectedDates}
-                  allowRange
-                />
-              </Popover>
-            </Navigation>
+  const loadingPageMarkup = (
+    <SkeletonPage>
+      <Layout>
+        <Layout.Section>
+          <Card sectioned>
+            <TextContainer>
+              <SkeletonDisplayText size="small" />
+              <SkeletonBodyText lines={9} />
+            </TextContainer>
+          </Card>
+        </Layout.Section>
+      </Layout>
+    </SkeletonPage>
+  );
 
-            <Icon source={CirclePlusMinor} color="critical" />
+  const pageMarkup = isLoading ? loadingPageMarkup : actualPageMarkup;
 
-            <Layout>
-              {items.map((item) => (
-                <Layout.Section oneThird>
-                  <MediaCard
-                    title={item.title + " - " + item.date}
-                    primaryAction={{
-                      content: <Icon source={HeartMajor} color="critical" />,
-                      //   icon: HeartMajor,
-                      outline: false,
+  const theme = {
+    logo: {
+      width: 124,
+      topBarSource:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png",
+      contextualSaveBarSource:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png",
+      //   url: "http://jadedpixel.com",
+      accessibilityLabel: "Jaded Pixel",
+    },
+  };
 
-                      onAction: () => {},
-                    }}
-                    description={item.explanation}
-                    // popoverActions={[
-                    //   { content: "Dismiss", onAction: () => {} },
-                    // ]}
-                    portrait={true}
-                    size="small"
-                  >
-                    {item.media_type === "image" ? (
-                      <img
-                        alt=""
-                        width="100%"
-                        height="100%"
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "center",
-                        }}
-                        src={item.url}
-                      />
-                    ) : (
-                      <VideoThumbnail
-                        videoLength={80}
-                        thumbnailUrl={item.thumbnail_url}
-                        // onClick()
-                      />
-                    )}
-                  </MediaCard>
-                </Layout.Section>
-              ))}
-            </Layout>
-          </Page>
-        </AppProvider>
-        <h1> Fetch data from an api in react </h1>
-        {items.map((item) => (
-          <ol key={item.id}>
-            Title: {item.title}, Date: {item.date}, Caption: {item.email}
-          </ol>
-        ))}
-        <div className="App">
-          <iframe
-            width="560"
-            height="315"
-            src={url}
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-          <button onClick={() => setPlay(true)}>Play</button>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <div style={{ height: "500px" }}>
+      <AppProvider
+        theme={theme}
+        i18n={{
+          Polaris: {
+            Avatar: {
+              label: "Avatar",
+              labelWithInitials: "Avatar with initials {initials}",
+            },
+            ContextualSaveBar: {
+              save: "Save",
+              discard: "Discard",
+            },
+            TextField: {
+              characterCount: "{count} characters",
+            },
+            TopBar: {
+              toggleMenuLabel: "Toggle menu",
+            },
+            Modal: {
+              iFrameTitle: "body markup",
+            },
+            Frame: {
+              skipToContent: "Skip to content",
+              navigationLabel: "Navigation",
+              Navigation: {
+                closeMobileNavigationLabel: "Close navigation",
+              },
+            },
+          },
+        }}
+      >
+        <Frame
+          topBar={topBarMarkup}
+          navigation={navigationMarkup}
+          showMobileNavigation={mobileNavigationActive}
+          onNavigationDismiss={toggleMobileNavigationActive}
+          skipToContentTarget={skipToContentRef.current}
+        >
+          {contextualSaveBarMarkup}
+          {loadingMarkup}
+          {pageMarkup}
+          {toastMarkup}
+        </Frame>
+      </AppProvider>
+    </div>
+  );
 }
-
-export default App;
