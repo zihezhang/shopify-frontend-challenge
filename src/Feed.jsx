@@ -95,44 +95,47 @@ function Feed() {
     return <FeedContainer>Loading...</FeedContainer>;
   } else {
     return (
-      <FeedContainer >
-            {items.map((item) => (
-                <MediaCard
-                    title={item.title + " - " + item.date}
-                    primaryAction={{
-                      content: <Icon source={HeartMajor} color="critical" />,
-                      //   icon: HeartMajor,
-                      outline: false,
-
-                      onAction: () => {},
-                    }}
-                    description={item.explanation}
-                    // popoverActions={[
-                    //   { content: "Dismiss", onAction: () => {} },
-                    // ]}
-                    portrait={true}
-                    size="small"
-                  >
-                    {item.media_type === "image" ? (
-                      <img
-                        alt=""
-                        width="100%"
-                        height="100%"
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "center",
-                        }}
-                        src={item.url}
-                      />
-                    ) : (
-                      <VideoThumbnail
-                        videoLength={80}
-                        thumbnailUrl={item.thumbnail_url}
-                        // onClick()
-                      />
-                    )}
-                </MediaCard>
-            ))}
+      <FeedContainer>
+        {items.map((item) => (
+          <MediaCard
+            title={item.title + " - " + item.date}
+            primaryAction={{
+              content: <Icon source={HeartMajor} color="critical" />,
+              //   icon: HeartMajor,
+              outline: false,
+              onAction: () => {},
+            }}
+            secondaryAction={{
+              content: "Share",
+              onAction: () => navigator.clipboard.writeText(item.hdurl),
+            }}
+            description={item.explanation}
+            // popoverActions={[
+            //   { content: "Dismiss", onAction: () => {} },
+            // ]}
+            portrait={true}
+            size="small"
+          >
+            {item.media_type === "image" ? (
+              <img
+                alt=""
+                width="100%"
+                height="100%"
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                }}
+                src={item.url}
+              />
+            ) : (
+              <VideoThumbnail
+                videoLength={80}
+                thumbnailUrl={item.thumbnail_url}
+                // onClick()
+              />
+            )}
+          </MediaCard>
+        ))}
 
         <div className="App">
           <iframe

@@ -19,8 +19,23 @@ import {
   TopBar,
 } from "@shopify/polaris";
 import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
+import styled from "styled-components";
+import spacegram from "./spacegram.png";
 
 import Feed from "./Feed";
+
+const NavContainer = styled.div`
+  ${
+    "" /* display: flex;
+  flex-direction: column; */
+  }
+  @media (min-width: 769px) {
+    margin: 5px 10px;
+  }
+  @media (max-width: 768px) {
+    padding: 0px;
+  }
+`;
 
 export default function FrameExample() {
   const defaultState = useRef({
@@ -32,18 +47,14 @@ export default function FrameExample() {
   const [toastActive, setToastActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [userMenuActive, setUserMenuActive] = useState(false);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
-  const [modalActive, setModalActive] = useState(false);
   const [nameFieldValue, setNameFieldValue] = useState(
     defaultState.current.nameFieldValue
   );
   const [emailFieldValue, setEmailFieldValue] = useState(
     defaultState.current.emailFieldValue
   );
-  const [storeName, setStoreName] = useState(
-    defaultState.current.nameFieldValue
-  );
+
   const handleDiscard = useCallback(() => {
     setEmailFieldValue(defaultState.current.emailFieldValue);
     setNameFieldValue(defaultState.current.nameFieldValue);
@@ -55,14 +66,9 @@ export default function FrameExample() {
 
     setIsDirty(false);
     setToastActive(true);
-    setStoreName(defaultState.current.nameFieldValue);
   }, [emailFieldValue, nameFieldValue]);
   const toggleToastActive = useCallback(
     () => setToastActive((toastActive) => !toastActive),
-    []
-  );
-  const toggleUserMenuActive = useCallback(
-    () => setUserMenuActive((userMenuActive) => !userMenuActive),
     []
   );
   const toggleMobileNavigationActive = useCallback(
@@ -81,12 +87,6 @@ export default function FrameExample() {
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
   ) : null;
 
-  const userMenuActions = [
-    {
-      items: [{ content: "Community forums" }],
-    },
-  ];
-
   const contextualSaveBarMarkup = isDirty ? (
     <ContextualSaveBar
       message="Unsaved changes"
@@ -99,17 +99,6 @@ export default function FrameExample() {
     />
   ) : null;
 
-  const userMenuMarkup = (
-    <TopBar.UserMenu
-      actions={userMenuActions}
-      name="Dharma"
-      detail={storeName}
-      initials="D"
-      open={userMenuActive}
-      onToggle={toggleUserMenuActive}
-    />
-  );
-
   const topBarMarkup = (
     <TopBar
       showNavigationToggle
@@ -120,21 +109,23 @@ export default function FrameExample() {
 
   const navigationMarkup = (
     <Navigation location="/">
-      <Navigation.Section
-        title="Navigation"
-        items={[
-          {
-            label: "Home",
-            icon: HomeMajor,
-            onClick: toggleIsLoading,
-          },
-          {
-            label: "Liked",
-            icon: HeartMajor,
-            onClick: toggleIsLoading,
-          },
-        ]}
-      />
+      <NavContainer>
+        <Navigation.Section
+          title="Navigation"
+          items={[
+            {
+              label: "Home",
+              icon: HomeMajor,
+              onClick: toggleIsLoading,
+            },
+            {
+              label: "Liked",
+              icon: HeartMajor,
+              onClick: toggleIsLoading,
+            },
+          ]}
+        />
+      </NavContainer>
     </Navigation>
   );
 
@@ -166,12 +157,11 @@ export default function FrameExample() {
   const theme = {
     logo: {
       width: 124,
-      topBarSource:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png",
+      topBarSource: spacegram,
       contextualSaveBarSource:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png",
       //   url: "http://jadedpixel.com",
-      accessibilityLabel: "Jaded Pixel",
+      accessibilityLabel: "Spacegram",
     },
   };
 
