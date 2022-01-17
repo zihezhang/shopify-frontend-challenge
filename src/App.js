@@ -22,7 +22,7 @@ import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
 import spacegram from "./spacegram.png";
 
-import Feed from "./Feed";
+import Feed from "./components/Feed";
 
 const NavContainer = styled.div`
   ${

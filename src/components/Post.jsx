@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Icon, MediaCard, VideoThumbnail } from "@shopify/polaris";
 import { HomeMajor, CirclePlusMinor, HeartMajor } from "@shopify/polaris-icons";
-import { getLiked, isLiked, setLiked } from "./utils/likesUtil";
+import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
@@ -29,6 +29,7 @@ const Post = ({ item, liked }) => {
         },
       }}
       secondaryAction={{
+        accessibilityLabel: "Share",
         content: "Share",
         onAction: () => navigator.clipboard.writeText(item.hdurl),
       }}

@@ -22,7 +22,7 @@ import { HomeMajor, CirclePlusMinor, HeartMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
 import Post from "./Post";
 import moment from "moment";
-import { getLiked, isLiked, setLiked } from "./utils/likesUtil";
+import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
 
 const FeedContainer = styled.div`
   display: flex;
