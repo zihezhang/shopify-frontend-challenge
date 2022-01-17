@@ -1,7 +1,6 @@
-
 export const getLiked = () => {
   const storage = window.localStorage.getItem("likedPosts");
-  const likes = storage ? storage : [];
+  const likes = storage ? JSON.parse(storage) : [];
   return likes;
 };
 
@@ -11,14 +10,11 @@ export const isLiked = (date) => {
 };
 
 export const setLiked = (date, liked) => {
-  const likes = getLiked();
-
+  let likedList = getLiked();
   if (liked) {
-    likes[date] = true;
+    likedList = likedList.filter((item) => item !== date);
   } else {
-    delete likes[date];
+    likedList.push(date);
   }
-  window.localStorage.setItem("likedPosts", likes);
-
-//   window.localStorage.setItem("likedPosts", JSON.stringify(likes));
+  window.localStorage.setItem("likedPosts", JSON.stringify(likedList));
 };

@@ -25,24 +25,7 @@ const Post = ({ item, liked }) => {
         outline: false,
         onAction: () => {
           setLike(!like);
-          console.log(
-            localStorage.getItem("likedImages"),
-            JSON.stringify(item)
-          );
-          // localStorage.setItem("likedImages", {
-          // //   ...localStorage.getItem("likedImages"),
-          //   JSON.stringify(item),
-          // });
-          if (localStorage.getItem("likedImages") === null) {
-            localStorage.setItem("likedImages", [JSON.stringify(item)]);
-          } else {
-            localStorage.setItem("likedImages", [
-              localStorage.getItem("likedImages"),
-              JSON.stringify(item),
-            ]);
-          }
-
-          console.log(JSON.parse(localStorage.getItem("likedImages") || "[]"));
+          setLiked(item.date, like);
         },
       }}
       secondaryAction={{
