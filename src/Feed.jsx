@@ -20,8 +20,9 @@ import {
 } from "@shopify/polaris";
 import { HomeMajor, CirclePlusMinor, HeartMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
-
+import Post from "./Post";
 import moment from "moment";
+import { getLiked, isLiked, setLiked } from "./utils/likesUtil";
 
 const FeedContainer = styled.div`
   display: flex;
@@ -40,7 +41,7 @@ function Feed() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-
+  const [likedImages, setLikedImages] = useState();
   console.log(todayDate.getMonth() + 1);
   const [{ month, year }, setDate] = useState({
     month: { ...todayDate.getMonth() },
@@ -97,44 +98,7 @@ function Feed() {
     return (
       <FeedContainer>
         {items.map((item) => (
-          <MediaCard
-            title={item.title + " - " + item.date}
-            primaryAction={{
-              content: <Icon source={HeartMajor} color="critical" />,
-              //   icon: HeartMajor,
-              outline: false,
-              onAction: () => {},
-            }}
-            secondaryAction={{
-              content: "Share",
-              onAction: () => navigator.clipboard.writeText(item.hdurl),
-            }}
-            description={item.explanation}
-            // popoverActions={[
-            //   { content: "Dismiss", onAction: () => {} },
-            // ]}
-            portrait={true}
-            size="small"
-          >
-            {item.media_type === "image" ? (
-              <img
-                alt=""
-                width="100%"
-                height="100%"
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                }}
-                src={item.url}
-              />
-            ) : (
-              <VideoThumbnail
-                videoLength={80}
-                thumbnailUrl={item.thumbnail_url}
-                // onClick()
-              />
-            )}
-          </MediaCard>
+          <Post item={item} liked={isLiked(item.date)} />
         ))}
 
         <div className="App">
