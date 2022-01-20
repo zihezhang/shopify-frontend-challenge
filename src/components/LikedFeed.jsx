@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Post from "./Post";
 import { Spinner } from "@shopify/polaris";
-import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
+import { getLiked, isLiked } from "../utils/likesUtil";
 
 const FeedContainer = styled.div`
   display: flex;
@@ -25,9 +25,6 @@ function LikedFeed({ toggleToastActive }) {
     ? `https://www.youtube.com/embed/tu-bgIg-Luo?autoplay=1`
     : `https://www.youtube.com/embed/tu-bgIg-Luo`;
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
   useEffect(() => {
     const likedPosts = getLiked();
     console.log(likedPosts);
@@ -46,9 +43,6 @@ function LikedFeed({ toggleToastActive }) {
           setIsLoaded(true);
           setItems(result.reverse());
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           console.log("ERROR");
           setIsLoaded(true);
@@ -80,18 +74,6 @@ function LikedFeed({ toggleToastActive }) {
         ) : (
           <p>No posts liked :(</p>
         )}
-
-        <div className="App">
-          <iframe
-            width="560"
-            height="315"
-            src={url}
-            frameBorder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-          <button onClick={() => setPlay(true)}>Play</button>
-        </div>
       </FeedContainer>
     );
   }
