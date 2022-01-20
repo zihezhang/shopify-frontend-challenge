@@ -40,34 +40,11 @@ const NavContainer = styled.div`
 `;
 
 export default function FrameExample() {
-  const defaultState = useRef({
-    emailFieldValue: "dharma@jadedpixel.com",
-    nameFieldValue: "Jaded Pixel",
-  });
   const skipToContentRef = useRef(null);
 
   const [toastActive, setToastActive] = useState(false);
-  const [isDirty, setIsDirty] = useState(false);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
-  const [nameFieldValue, setNameFieldValue] = useState(
-    defaultState.current.nameFieldValue
-  );
-  const [emailFieldValue, setEmailFieldValue] = useState(
-    defaultState.current.emailFieldValue
-  );
 
-  const handleDiscard = useCallback(() => {
-    setEmailFieldValue(defaultState.current.emailFieldValue);
-    setNameFieldValue(defaultState.current.nameFieldValue);
-    setIsDirty(false);
-  }, []);
-  const handleSave = useCallback(() => {
-    defaultState.current.nameFieldValue = nameFieldValue;
-    defaultState.current.emailFieldValue = emailFieldValue;
-
-    setIsDirty(false);
-    setToastActive(true);
-  }, [emailFieldValue, nameFieldValue]);
   const toggleToastActive = useCallback(
     () => setToastActive((toastActive) => !toastActive),
     []
@@ -82,18 +59,6 @@ export default function FrameExample() {
 
   const toastMarkup = toastActive ? (
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
-  ) : null;
-
-  const contextualSaveBarMarkup = isDirty ? (
-    <ContextualSaveBar
-      message="Unsaved changes"
-      saveAction={{
-        onAction: handleSave,
-      }}
-      discardAction={{
-        onAction: handleDiscard,
-      }}
-    />
   ) : null;
 
   const topBarMarkup = (
@@ -139,7 +104,6 @@ export default function FrameExample() {
       topBarSource: spacegram,
       contextualSaveBarSource:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png",
-      //   url: "http://jadedpixel.com",
       accessibilityLabel: "Spacegram",
     },
   };
@@ -185,7 +149,6 @@ export default function FrameExample() {
             onNavigationDismiss={toggleMobileNavigationActive}
             skipToContentTarget={skipToContentRef.current}
           >
-            {contextualSaveBarMarkup}
             {pageMarkup}
             {toastMarkup}
           </Frame>
