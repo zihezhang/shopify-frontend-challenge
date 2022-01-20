@@ -21,6 +21,7 @@ import {
 import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
 import spacegram from "./spacegram.png";
+import Routes from "./Routes";
 
 import Feed from "./components/Feed";
 
@@ -78,10 +79,10 @@ export default function FrameExample() {
       ),
     []
   );
-  const toggleIsLoading = useCallback(
-    () => setIsLoading((isLoading) => !isLoading),
-    []
-  );
+  //   const toggleIsLoading = useCallback(
+  //     () => setIsLoading((isLoading) => !isLoading),
+  //     []
+  //   );
 
   const toastMarkup = toastActive ? (
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
@@ -114,14 +115,16 @@ export default function FrameExample() {
           title="Navigation"
           items={[
             {
+              url: "/home",
               label: "Home",
               icon: HomeMajor,
-              onClick: toggleIsLoading,
+              //   onClick: toggleIsLoading,
             },
             {
+              url: "/liked",
               label: "Liked",
               icon: HeartMajor,
-              onClick: toggleIsLoading,
+              //   onClick: toggleIsLoading,
             },
           ]}
         />
@@ -134,6 +137,7 @@ export default function FrameExample() {
   const actualPageMarkup = (
     <Page title="Your Feed">
       <Feed />
+      {/* <Routes /> */}
     </Page>
   );
 
