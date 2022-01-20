@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Feed from "./components/HomeFeed";
+import HomeFeed from "./components/HomeFeed";
 import LikedFeed from "./components/LikedFeed";
 
 function BrowserRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Feed />} />
-      <Route path="/home" element={<Feed />} />
+      <Route path="/" element={<HomeFeed />} />
+      <Route path="/home" element={<HomeFeed />} />
       <Route path="/liked" element={<LikedFeed />} />
     </Routes>
   );

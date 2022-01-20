@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Post from "./Post";
 import moment from "moment";
 import { Spinner } from "@shopify/polaris";
-import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
+import { isLiked } from "../utils/likesUtil";
 
 const FeedContainer = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const FeedContainer = styled.div`
   }
 `;
 
-function Feed() {
+function HomeFeed() {
   const todayDate = new Date();
   const days = 86400000;
   const [error, setError] = useState(null);
@@ -103,4 +103,4 @@ function Feed() {
   }
 }
 
-export default Feed;
+export default HomeFeed;

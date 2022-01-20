@@ -15,7 +15,7 @@ const FeedContainer = styled.div`
   }
 `;
 
-function Feed() {
+function LikedFeed() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -89,4 +89,4 @@ function Feed() {
   }
 }
 
-export default Feed;
+export default LikedFeed;
