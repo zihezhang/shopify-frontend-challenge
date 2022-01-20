@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Post from "./Post";
 import moment from "moment";
 import { Spinner } from "@shopify/polaris";
 import { isLiked } from "../utils/likesUtil";
+import InfiniteScroll from "react-infinite-scroll-component";
+import useFetch from "../hooks/useFetch";
 
 const FeedContainer = styled.div`
   display: flex;
@@ -18,33 +20,36 @@ const FeedContainer = styled.div`
 
 function HomeFeed({ toggleToastActive }) {
   const todayDate = new Date();
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+  const endDate = moment(todayDate).format("YYYY-MM-DD");
+  const [startDate, setStartDate] = useState(
+    moment(todayDate).subtract(14, "days").format("YYYY-MM-DD")
+  );
+  const { loading, error, list } = useFetch(startDate, endDate);
+  const loader = useRef(null);
+
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      console.log("subtract");
+      setStartDate((prev) =>
+        moment(prev).subtract(7, "days").format("YYYY-MM-DD")
+      );
+    }
+  }, []);
 
   useEffect(() => {
-    const start = moment(todayDate).subtract(7, "days").format("YYYY-MM-DD");
-    const end = moment(todayDate).format("YYYY-MM-DD");
-    fetch(
-      `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API}&start_date=${start}&end_date=${end}&thumbs=true`
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setItems(result.reverse());
-        },
-        (error) => {
-          console.log("ERROR");
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
+    const option = {
+      root: null,
+      rootMargin: "10px",
+      threshold: 0,
+    };
+    const observer = new IntersectionObserver(handleObserver, option);
+    if (loader.current) observer.observe(loader.current);
+  }, [handleObserver]);
 
   if (error) {
     return <FeedContainer>Error: {error.message}</FeedContainer>;
-  } else if (!isLoaded) {
+  } else if (loading) {
     return (
       <FeedContainer>
         <Spinner accessibilityLabel="Spinner example" size="large" />
@@ -54,13 +59,15 @@ function HomeFeed({ toggleToastActive }) {
   } else {
     return (
       <FeedContainer>
-        {items.map((item) => (
+        {list.map((item) => (
           <Post
             item={item}
             liked={isLiked(item.date)}
             toggleToastActive={toggleToastActive}
+            key={item.date}
           />
         ))}
+        <div ref={loader} />
       </FeedContainer>
     );
   }

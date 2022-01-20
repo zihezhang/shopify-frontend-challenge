@@ -20,14 +20,8 @@ function LikedFeed({ toggleToastActive }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
 
-  const [play, setPlay] = React.useState(false);
-  const url = play
-    ? `https://www.youtube.com/embed/tu-bgIg-Luo?autoplay=1`
-    : `https://www.youtube.com/embed/tu-bgIg-Luo`;
-
   useEffect(() => {
     const likedPosts = getLiked();
-    console.log(likedPosts);
     Promise.all(
       likedPosts.map((date) =>
         fetch(
@@ -38,10 +32,8 @@ function LikedFeed({ toggleToastActive }) {
       .then((res) => Promise.all(res.map((response) => response.json())))
       .then(
         (result) => {
-          console.log(result);
-
           setIsLoaded(true);
-          setItems(result.reverse());
+          setItems(result);
         },
         (error) => {
           console.log("ERROR");
@@ -69,6 +61,7 @@ function LikedFeed({ toggleToastActive }) {
               item={item}
               liked={isLiked(item.date)}
               toggleToastActive={toggleToastActive}
+              key={item.date}
             />
           ))
         ) : (
