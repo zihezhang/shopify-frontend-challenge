@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Post from "./Post";
 import moment from "moment";
+import { Spinner } from "@shopify/polaris";
 import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
 
 const FeedContainer = styled.div`
@@ -73,7 +74,12 @@ function Feed() {
   if (error) {
     return <FeedContainer>Error: {error.message}</FeedContainer>;
   } else if (!isLoaded) {
-    return <FeedContainer>Loading...</FeedContainer>;
+    return (
+      <FeedContainer>
+        <Spinner accessibilityLabel="Spinner example" size="large" />
+        Loading...
+      </FeedContainer>
+    );
   } else {
     return (
       <FeedContainer>
