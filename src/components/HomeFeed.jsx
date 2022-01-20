@@ -16,7 +16,7 @@ const FeedContainer = styled.div`
   }
 `;
 
-function HomeFeed() {
+function HomeFeed({ toggleToastActive }) {
   const todayDate = new Date();
   const days = 86400000;
   const [error, setError] = useState(null);
@@ -84,7 +84,11 @@ function HomeFeed() {
     return (
       <FeedContainer>
         {items.map((item) => (
-          <Post item={item} liked={isLiked(item.date)} />
+          <Post
+            item={item}
+            liked={isLiked(item.date)}
+            toggleToastActive={toggleToastActive}
+          />
         ))}
 
         <div className="App">

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartGloveSolid } from "@fortawesome/free-solid-svg-icons";
 
-const Post = ({ item, liked }) => {
+const Post = ({ item, liked, toggleToastActive }) => {
   const [like, setLike] = useState(liked);
 
   return (
@@ -28,7 +28,10 @@ const Post = ({ item, liked }) => {
       secondaryAction={{
         accessibilityLabel: "Share",
         content: "Share",
-        onAction: () => navigator.clipboard.writeText(item.hdurl),
+        onAction: () => {
+          navigator.clipboard.writeText(item.hdurl);
+          toggleToastActive();
+        },
       }}
       description={item.explanation}
       // popoverActions={[

@@ -41,7 +41,7 @@ export default function FrameExample() {
   );
 
   const toastMarkup = toastActive ? (
-    <Toast onDismiss={toggleToastActive} content="Changes saved" />
+    <Toast onDismiss={toggleToastActive} content="Saved to clipboard" />
   ) : null;
 
   const topBarMarkup = (
@@ -75,8 +75,7 @@ export default function FrameExample() {
 
   const pageMarkup = (
     <Page title="Your Feed">
-      <BrowserRoutes />
-      {toastMarkup}
+      <BrowserRoutes toggleToastActive={toggleToastActive} />
     </Page>
   );
 

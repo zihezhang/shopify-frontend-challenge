@@ -15,7 +15,7 @@ const FeedContainer = styled.div`
   }
 `;
 
-function LikedFeed() {
+function LikedFeed({ toggleToastActive }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -69,9 +69,17 @@ function LikedFeed() {
   } else {
     return (
       <FeedContainer>
-        {items.map((item) => (
-          <Post item={item} liked={isLiked(item.date)} />
-        ))}
+        {items.length !== 0 ? (
+          items.map((item) => (
+            <Post
+              item={item}
+              liked={isLiked(item.date)}
+              toggleToastActive={toggleToastActive}
+            />
+          ))
+        ) : (
+          <p>No posts liked :(</p>
+        )}
 
         <div className="App">
           <iframe
