@@ -4,7 +4,6 @@ import Post from "./Post";
 import moment from "moment";
 import { Spinner } from "@shopify/polaris";
 import { isLiked } from "../utils/likesUtil";
-import InfiniteScroll from "react-infinite-scroll-component";
 import useFetch from "../hooks/useFetch";
 
 const FeedContainer = styled.div`
