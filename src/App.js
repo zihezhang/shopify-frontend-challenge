@@ -1,20 +1,9 @@
 import React, { useCallback, useRef, useState } from "react";
 import {
   AppProvider,
-  ActionList,
-  Avatar,
-  Card,
-  ContextualSaveBar,
-  FormLayout,
   Frame,
-  Layout,
-  Loading,
   Navigation,
   Page,
-  SkeletonBodyText,
-  SkeletonDisplayText,
-  SkeletonPage,
-  TextContainer,
   Toast,
   TopBar,
 } from "@shopify/polaris";
@@ -24,13 +13,7 @@ import styled from "styled-components";
 import spacegram from "./spacegram.png";
 import BrowserRoutes from "./BrowserRoutes";
 
-import Feed from "./components/Feed";
-
 const NavContainer = styled.div`
-  ${
-    "" /* display: flex;
-  flex-direction: column; */
-  }
   @media (min-width: 769px) {
     margin: 5px 10px;
   }
@@ -64,7 +47,6 @@ export default function FrameExample() {
   const topBarMarkup = (
     <TopBar
       showNavigationToggle
-      //   userMenu={userMenuMarkup}
       onNavigationToggle={toggleMobileNavigationActive}
     />
   );

@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Icon, MediaCard, VideoThumbnail } from "@shopify/polaris";
-import { HomeMajor, CirclePlusMinor, HeartMajor } from "@shopify/polaris-icons";
-import { getLiked, isLiked, setLiked } from "../utils/likesUtil";
+import React, { useState } from "react";
+import { MediaCard, VideoThumbnail } from "@shopify/polaris";
+import { setLiked } from "../utils/likesUtil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartGloveSolid } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,7 +19,6 @@ const Post = ({ item, liked }) => {
             color={like ? "red" : "gray"}
           />
         ),
-        //   icon: HeartMajor,
         outline: false,
         onAction: () => {
           setLike(!like);
