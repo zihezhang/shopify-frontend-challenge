@@ -34,9 +34,6 @@ const Post = ({ item, liked, toggleToastActive }) => {
         },
       }}
       description={item.explanation}
-      // popoverActions={[
-      //   { content: "Dismiss", onAction: () => {} },
-      // ]}
       portrait={true}
       size="small"
     >
@@ -55,7 +52,7 @@ const Post = ({ item, liked, toggleToastActive }) => {
         <VideoThumbnail
           videoLength={80}
           thumbnailUrl={item.thumbnail_url}
-          // onClick()
+          onClick={() => window.open(item.url)}
         />
       )}
     </MediaCard>
