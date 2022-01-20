@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Post from "./Post";
 import moment from "moment";
-import { Spinner } from "@shopify/polaris";
+import { Page, Spinner } from "@shopify/polaris";
 import { isLiked } from "../utils/likesUtil";
 import useFetch from "../hooks/useFetch";
 
-const FeedContainer = styled.div`
+const FeedContainer = styled(Page)`
   display: flex;
   flex-direction: column;
   @media (min-width: 769px) {
@@ -46,17 +46,19 @@ function HomeFeed({ toggleToastActive }) {
   }, [handleObserver]);
 
   if (error) {
-    return <FeedContainer>Error: {error.message}</FeedContainer>;
+    return (
+      <FeedContainer title="Your Feed">Error: {error.message}</FeedContainer>
+    );
   } else if (loading) {
     return (
-      <FeedContainer>
+      <FeedContainer title="Your Feed">
         <Spinner accessibilityLabel="Spinner example" size="large" />
         Loading...
       </FeedContainer>
     );
   } else {
     return (
-      <FeedContainer>
+      <FeedContainer title="Your Feed">
         {list.map((item) => (
           <Post
             item={item}

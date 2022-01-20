@@ -8,7 +8,7 @@ import {
   TopBar,
 } from "@shopify/polaris";
 import { BrowserRouter } from "react-router-dom";
-import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
+import { HomeMajor, HeartMajor, CodeMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
 import spacegram from "./spacegram.png";
 import BrowserRoutes from "./BrowserRoutes";
@@ -72,6 +72,15 @@ export default function FrameExample() {
               label: "Liked",
               icon: HeartMajor,
             },
+            {
+              url: "/redirect-github",
+              label: "GitHub",
+              icon: CodeMajor,
+              onClick: () =>
+                window.open(
+                  "https://github.com/zihezhang/shopify-frontend-challenge"
+                ),
+            },
           ]}
         />
       </NavContainer>
@@ -80,9 +89,7 @@ export default function FrameExample() {
 
   const pageMarkup = (
     <PageContainer>
-      <Page title="Your Feed">
-        <BrowserRoutes toggleToastActive={toggleToastActive} />
-      </Page>
+      <BrowserRoutes toggleToastActive={toggleToastActive} />
     </PageContainer>
   );
 

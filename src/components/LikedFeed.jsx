@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Post from "./Post";
-import { Spinner } from "@shopify/polaris";
+import { Spinner, Page } from "@shopify/polaris";
 import { getLiked, isLiked } from "../utils/likesUtil";
 
-const FeedContainer = styled.div`
+const FeedContainer = styled(Page)`
   display: flex;
   flex-direction: column;
   @media (min-width: 769px) {
@@ -44,17 +44,19 @@ function LikedFeed({ toggleToastActive }) {
   }, []);
 
   if (error) {
-    return <FeedContainer>Error: {error.message}</FeedContainer>;
+    return (
+      <FeedContainer title="Your Feed">Error: {error.message}</FeedContainer>
+    );
   } else if (!isLoaded) {
     return (
-      <FeedContainer>
+      <FeedContainer title="Your Feed">
         <Spinner accessibilityLabel="Spinner example" size="large" />
         Loading...
       </FeedContainer>
     );
   } else {
     return (
-      <FeedContainer>
+      <FeedContainer title="Your Feed">
         {items.length !== 0 ? (
           items.map((item) => (
             <Post
