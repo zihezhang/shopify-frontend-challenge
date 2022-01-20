@@ -29,7 +29,6 @@ function HomeFeed({ toggleToastActive }) {
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting) {
-      console.log("subtract");
       setStartDate((prev) =>
         moment(prev).subtract(7, "days").format("YYYY-MM-DD")
       );

@@ -7,7 +7,6 @@ function useFetch(start, end) {
   const [list, setList] = useState([]);
 
   const sendQuery = useCallback(async () => {
-    console.log(start, end);
     try {
       await setLoading(true);
       await setError(false);
