@@ -18,29 +18,9 @@ const FeedContainer = styled.div`
 
 function HomeFeed({ toggleToastActive }) {
   const todayDate = new Date();
-  const days = 86400000;
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  console.log(todayDate.getMonth() + 1);
-  const [{ month, year }, setDate] = useState({
-    month: { ...todayDate.getMonth() },
-    year: todayDate.getFullYear(),
-  });
-  const [selectedDates, setSelectedDates] = useState({
-    start: new Date(todayDate - 5 * days),
-    end: todayDate,
-  });
-
-  const handleMonthChange = useCallback(
-    (month, year) => setDate({ month, year }),
-    []
-  );
-
-  const [play, setPlay] = React.useState(false);
-  const url = play
-    ? `https://www.youtube.com/embed/tu-bgIg-Luo?autoplay=1`
-    : `https://www.youtube.com/embed/tu-bgIg-Luo`;
 
   useEffect(() => {
     const start = moment(todayDate).subtract(7, "days").format("YYYY-MM-DD");
@@ -51,8 +31,6 @@ function HomeFeed({ toggleToastActive }) {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result, selectedDates);
-
           setIsLoaded(true);
           setItems(result.reverse());
         },

@@ -21,6 +21,11 @@ const NavContainer = styled.div`
     padding: 0px;
   }
 `;
+const PageContainer = styled.div`
+  @media (min-width: 769px) {
+    margin: 10px 50px;
+  }
+`;
 
 export default function FrameExample() {
   const skipToContentRef = useRef(null);
@@ -74,9 +79,11 @@ export default function FrameExample() {
   );
 
   const pageMarkup = (
-    <Page title="Your Feed">
-      <BrowserRoutes toggleToastActive={toggleToastActive} />
-    </Page>
+    <PageContainer>
+      <Page title="Your Feed">
+        <BrowserRoutes toggleToastActive={toggleToastActive} />
+      </Page>
+    </PageContainer>
   );
 
   const theme = {
