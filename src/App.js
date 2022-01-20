@@ -47,7 +47,6 @@ export default function FrameExample() {
   const skipToContentRef = useRef(null);
 
   const [toastActive, setToastActive] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
   const [nameFieldValue, setNameFieldValue] = useState(
@@ -80,10 +79,6 @@ export default function FrameExample() {
       ),
     []
   );
-  //   const toggleIsLoading = useCallback(
-  //     () => setIsLoading((isLoading) => !isLoading),
-  //     []
-  //   );
 
   const toastMarkup = toastActive ? (
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
@@ -119,13 +114,11 @@ export default function FrameExample() {
               url: "/home",
               label: "Home",
               icon: HomeMajor,
-              //   onClick: toggleIsLoading,
             },
             {
               url: "/liked",
               label: "Liked",
               icon: HeartMajor,
-              //   onClick: toggleIsLoading,
             },
           ]}
         />
@@ -133,30 +126,12 @@ export default function FrameExample() {
     </Navigation>
   );
 
-  const loadingMarkup = isLoading ? <Loading /> : null;
-
-  const actualPageMarkup = (
+  const pageMarkup = (
     <Page title="Your Feed">
       <BrowserRoutes />
+      {toastMarkup}
     </Page>
   );
-
-  const loadingPageMarkup = (
-    <SkeletonPage>
-      <Layout>
-        <Layout.Section>
-          <Card sectioned>
-            <TextContainer>
-              <SkeletonDisplayText size="small" />
-              <SkeletonBodyText lines={9} />
-            </TextContainer>
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </SkeletonPage>
-  );
-
-  const pageMarkup = isLoading ? loadingPageMarkup : actualPageMarkup;
 
   const theme = {
     logo: {
@@ -211,7 +186,6 @@ export default function FrameExample() {
             skipToContentTarget={skipToContentRef.current}
           >
             {contextualSaveBarMarkup}
-            {loadingMarkup}
             {pageMarkup}
             {toastMarkup}
           </Frame>
