@@ -18,10 +18,11 @@ import {
   Toast,
   TopBar,
 } from "@shopify/polaris";
+import { BrowserRouter } from "react-router-dom";
 import { HomeMajor, HeartMajor } from "@shopify/polaris-icons";
 import styled from "styled-components";
 import spacegram from "./spacegram.png";
-import Routes from "./Routes";
+import BrowserRoutes from "./BrowserRoutes";
 
 import Feed from "./components/Feed";
 
@@ -136,8 +137,7 @@ export default function FrameExample() {
 
   const actualPageMarkup = (
     <Page title="Your Feed">
-      <Feed />
-      {/* <Routes /> */}
+      <BrowserRoutes />
     </Page>
   );
 
@@ -171,50 +171,52 @@ export default function FrameExample() {
 
   return (
     <div style={{ height: "500px" }}>
-      <AppProvider
-        theme={theme}
-        i18n={{
-          Polaris: {
-            Avatar: {
-              label: "Avatar",
-              labelWithInitials: "Avatar with initials {initials}",
-            },
-            ContextualSaveBar: {
-              save: "Save",
-              discard: "Discard",
-            },
-            TextField: {
-              characterCount: "{count} characters",
-            },
-            TopBar: {
-              toggleMenuLabel: "Toggle menu",
-            },
-            Modal: {
-              iFrameTitle: "body markup",
-            },
-            Frame: {
-              skipToContent: "Skip to content",
-              navigationLabel: "Navigation",
-              Navigation: {
-                closeMobileNavigationLabel: "Close navigation",
+      <BrowserRouter>
+        <AppProvider
+          theme={theme}
+          i18n={{
+            Polaris: {
+              Avatar: {
+                label: "Avatar",
+                labelWithInitials: "Avatar with initials {initials}",
+              },
+              ContextualSaveBar: {
+                save: "Save",
+                discard: "Discard",
+              },
+              TextField: {
+                characterCount: "{count} characters",
+              },
+              TopBar: {
+                toggleMenuLabel: "Toggle menu",
+              },
+              Modal: {
+                iFrameTitle: "body markup",
+              },
+              Frame: {
+                skipToContent: "Skip to content",
+                navigationLabel: "Navigation",
+                Navigation: {
+                  closeMobileNavigationLabel: "Close navigation",
+                },
               },
             },
-          },
-        }}
-      >
-        <Frame
-          topBar={topBarMarkup}
-          navigation={navigationMarkup}
-          showMobileNavigation={mobileNavigationActive}
-          onNavigationDismiss={toggleMobileNavigationActive}
-          skipToContentTarget={skipToContentRef.current}
+          }}
         >
-          {contextualSaveBarMarkup}
-          {loadingMarkup}
-          {pageMarkup}
-          {toastMarkup}
-        </Frame>
-      </AppProvider>
+          <Frame
+            topBar={topBarMarkup}
+            navigation={navigationMarkup}
+            showMobileNavigation={mobileNavigationActive}
+            onNavigationDismiss={toggleMobileNavigationActive}
+            skipToContentTarget={skipToContentRef.current}
+          >
+            {contextualSaveBarMarkup}
+            {loadingMarkup}
+            {pageMarkup}
+            {toastMarkup}
+          </Frame>
+        </AppProvider>
+      </BrowserRouter>
     </div>
   );
 }
