@@ -66,6 +66,7 @@ function HomeFeed({ toggleToastActive }) {
             key={item.date}
           />
         ))}
+        <p>You've viewed all the recent posts, come back later for more!</p>
         <div ref={loader} />
       </FeedContainer>
     );
